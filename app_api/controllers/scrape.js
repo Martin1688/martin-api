@@ -43,7 +43,7 @@ const getexchange = (req, res) => {
 
 const getweatherevents= (req, res) =>{
     const urls =['https://www.cwb.gov.tw/V8/C/E/index.html','https://www.cwb.gov.tw/V8/C/P/Warning/W25.html','https://www.cwb.gov.tw/V8/C/P/Warning/W26.html','https://www.cwb.gov.tw/V8/C/P/Warning/W37.html','https://www.cwb.gov.tw/V8/C/P/Typhoon/TY_NEWS.html',] ;
-    //地震報告,陸上強風特報,大雨特報,颱風消息,長浪即時訊息
+    //地震報告,陸上強風特報,大雨特報,長浪即時訊息,颱風消息
     const info = [];
     (async () => {
         const browser = await puppeteer.launch({
@@ -56,7 +56,7 @@ const getweatherevents= (req, res) =>{
         let $ = await cheerio.load(body)
         const list = $(".eq-row");
         for (let i = 0; i < list.length; i++){
-            const grade ='最大震度'+list.eq(i).find("[headers='maximum']").html();
+            const grade =list.eq(i).find("[headers='maximum']").html();//'最大震度'+
             const div =list.eq(i).find("[class='eq-detail']");
             let datetime='';
             div.find('span').each(function(c,li){
@@ -79,7 +79,7 @@ const getweatherevents= (req, res) =>{
             //console.log(list.eq(i).html());
             data.push({grade, datetime, obj});
         }
-        info.push({title:'地震報告',data});
+        info.push({title:'地震報告', datetime: '', data});
         for (let x = 1; x < 3; x++) {
             await page.goto(urls[x]);
             //let anchor = page.$("[title='發布情形']");
@@ -116,19 +116,22 @@ const getweatherevents= (req, res) =>{
         const content = div.find(".WarnContent").text();
         let time = div.find(".datetime").text();
         info.push({ title: title, datetime: time, data: content });
-        // await page.goto(urls[4]);
-        // await page.click("[href='#business-1']");
-        // const body4 = await page.content();
-        // $ = await cheerio.load(body4);
-        // title = $('.main-title').text();
-        // div =$('.col-md-12');
-        // time = div.find("#TY_TIME").html();
-
-        // const contentty=div.find('h4').text();
-        // const contentbref=div.find("[href='#collapse-A1']").text();
-        // const contentbody=div.find("[class='panel-body']").text();
-        // console.log(contentbref);
-        // info.push({ title: title,  datetime: time, data:{contentty,contentbref,contentbody} });
+        await page.goto(urls[4]);
+        let el =  (await page.$("[href='#business-1']"));//氣象資料有可能不存在，因此先判斷存在再點擊以免當掉。
+        if(el){
+            await page.click(el);
+            const body4 = await page.content();
+            $ = await cheerio.load(body4);
+            title = $('.main-title').text();
+            div =$('.col-md-12');
+            time = div.find("#TY_TIME").html();
+    
+            const contentty=div.find('h4').text();
+            const contentbref=div.find("[href='#collapse-A1']").text();
+            const contentbody=div.find("[class='panel-body']").text();
+            console.log(contentbref);
+            info.push({ title: title,  datetime: time, data:{contentty,contentbref,contentbody} });
+            }
          res.status(200).json({ message: '', data: info });
        await browser.close();
 
@@ -171,8 +174,6 @@ const getweather = (req, res) => {
         const list = $(".warnlist li");
         let items = [];
         for (let i = 0; i < list.length; i++){
-            //const item = list.eq(i).find('a').attr('title');
-            //console.log(list.eq(i).find('a').html());
             items.push({title:list.eq(i).find('a').attr('title'),href:list.eq(i).find('a').attr('href')});
         }
         info.push({ title: '氣象特報', datetime: '', data: items });

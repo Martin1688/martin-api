@@ -22,25 +22,25 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'app_public')));
 
 //Cross-Origin Resource Sharing (CORS) 設定
-// app.use('/api', (req, res, next) => {
-//     // // //console.log('cors');
-//     // // if(req.headers.origin){
-//     // //     console.log(req.headers.origin);
-//     // // }
-//     // // var allowedOrigins = ['http://127.0.0.1:4200', 'http://localhost:4200', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://martin-api.vercel.app','https://martin-web.vercel.app'];
-//     // // var origin = req.headers.origin === undefined ? req.headers.host:req.headers.origin;
-//     // // //console.log(req.headers);
-//     // // console.log(origin);
-//     // // if (allowedOrigins.indexOf(origin) > -1) {
-//     // //     res.header('Access-Control-Allow-Origin', origin);
-//     // // }
-//     // // //res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+app.use('/api', (req, res, next) => {
+    //console.log('cors');
+    if(req.headers.origin){
+        console.log(req.headers.origin);
+    }
+    var allowedOrigins = ['https://martin-web.vercel.app', 'https://martin-api.vercel.app', 'http://localhost:4200', 'http://localhost:3000', 'http://127.0.0.1:3000','http://127.0.0.1:4200'];
+    var origin = req.headers.origin === undefined ? req.headers.host:req.headers.origin;
+    //console.log(req.headers);
+    console.log(origin);
+    if (allowedOrigins.indexOf(origin) > -1) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+    //res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
 
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS,PATCH,POST,PUT,DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//     next();
-// });
+    //res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS,PATCH,POST,PUT,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+});
 
 //如果是API就轉到API router管理檔，router管理檔會將path與處理函數對應
 app.use('/api', apiRouter);

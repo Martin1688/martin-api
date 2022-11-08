@@ -27,7 +27,7 @@ app.use('/api', (req, res, next) => {
     if(req.headers.origin){
         console.log(req.headers.origin);
     }
-    var allowedOrigins = ['http://127.0.0.1:4200', 'http://localhost:4200', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://martin-api.vercel.app/'];
+    var allowedOrigins = ['http://127.0.0.1:4200', 'http://localhost:4200', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://martin-api.vercel.app','https://martin-web.vercel.app'];
     var origin = req.headers.origin === undefined ? req.headers.host:req.headers.origin;
     //console.log(req.headers);
     console.log(origin);

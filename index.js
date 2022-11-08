@@ -22,40 +22,25 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'app_public')));
 
 //Cross-Origin Resource Sharing (CORS) 設定
-app.use('/api', (req, res, next) => {
-    // // //console.log('cors');
-    // // if(req.headers.origin){
-    // //     console.log(req.headers.origin);
-    // // }
-    // // var allowedOrigins = ['http://127.0.0.1:4200', 'http://localhost:4200', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://martin-api.vercel.app','https://martin-web.vercel.app'];
-    // // var origin = req.headers.origin === undefined ? req.headers.host:req.headers.origin;
-    // // //console.log(req.headers);
-    // // console.log(origin);
-    // // if (allowedOrigins.indexOf(origin) > -1) {
-    // //     res.header('Access-Control-Allow-Origin', origin);
-    // // }
-    // // //res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+// app.use('/api', (req, res, next) => {
+//     // // //console.log('cors');
+//     // // if(req.headers.origin){
+//     // //     console.log(req.headers.origin);
+//     // // }
+//     // // var allowedOrigins = ['http://127.0.0.1:4200', 'http://localhost:4200', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://martin-api.vercel.app','https://martin-web.vercel.app'];
+//     // // var origin = req.headers.origin === undefined ? req.headers.host:req.headers.origin;
+//     // // //console.log(req.headers);
+//     // // console.log(origin);
+//     // // if (allowedOrigins.indexOf(origin) > -1) {
+//     // //     res.header('Access-Control-Allow-Origin', origin);
+//     // // }
+//     // // //res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
 
-    // // res.header('Access-Control-Allow-Origin', '*');
-    // // res.header('Access-Control-Allow-Methods', 'GET, OPTIONS,PATCH,POST,PUT,DELETE');
-    // // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
-
-//---- other code
-
- //Preflight CORS handler
-    if(req.method === 'OPTIONS') {
-        return res.status(200).json(({
-            body: "OK"
-        }))
-    }
-    
-    next();
-});
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS,PATCH,POST,PUT,DELETE');
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//     next();
+// });
 
 //如果是API就轉到API router管理檔，router管理檔會將path與處理函數對應
 app.use('/api', apiRouter);

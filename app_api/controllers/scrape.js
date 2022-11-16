@@ -1,5 +1,6 @@
 const app = require('https');
 const puppeteer = require('puppeteer');
+const chromium = require('chromium');
 const cheerio = require("cheerio");
 const getexchange = (req, res) => {
     const url = 'https://rate.bot.com.tw/xrt?Lang=zh-TW';
@@ -47,6 +48,7 @@ const getweatherevents= (req, res) =>{
     const info = [];
     (async () => {
         const browser = await puppeteer.launch({
+            executablePath:chromium.path,
             headless: true//false 會讓瀏覽器實際開啟//true 會再後台開啟           
         });
         const data = [];

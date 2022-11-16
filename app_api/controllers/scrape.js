@@ -47,6 +47,7 @@ const getweatherevents= (req, res) =>{
     //地震報告,陸上強風特報,大雨特報,長浪即時訊息,颱風消息
     const info = [];
     (async () => {
+        console.log(chromium.path);
         const browser = await puppeteer.launch({
             executablePath:chromium.path,
             headless: true//false 會讓瀏覽器實際開啟//true 會再後台開啟           
@@ -146,7 +147,9 @@ const getweather = (req, res) => {
     const btnary = ['#btnDay0', '#btnDay1', '#btnDay2'];
     const info = [];
     (async () => {
+        console.log(chromium.path);
         const browser = await puppeteer.launch({
+            executablePath:chromium.path,
             headless: true//false 會讓瀏覽器實際開啟//true 會再後台開啟           
         });
         const data = [];

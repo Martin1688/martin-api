@@ -30,7 +30,7 @@ app.use('/api', (req, res, next) => {
     var allowedOrigins = ['https://martin-web.vercel.app', 'https://martin-api.vercel.app', 'http://localhost:4200', 'http://localhost:3000', 'http://127.0.0.1:3000','http://127.0.0.1:4200'];
     var origin = req.headers.origin === undefined ? req.headers.host:req.headers.origin;
     //console.log(req.headers);
-    console.log(origin);
+    //console.log(origin);
     if (allowedOrigins.indexOf(origin) > -1) {
         res.header('Access-Control-Allow-Origin', origin);
     }
